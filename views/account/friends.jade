@@ -1,0 +1,36 @@
+extends ../layout
+
+block content
+    .container
+        if messages.success
+            .alert.alert-success(role='alert')
+                for success in messages.success
+                    div= success.msg
+        if messages.error
+            .alert.alert-danger(role='alert')
+                for error in messages.error
+                    div= error.msg
+        .panel
+            .panel-body
+                legend Friends - They can access your protected cards
+                if !user.friend[0]
+                    p Looks like you don't have any friends :(
+                else
+                    for val, index in user.friend
+                        p #{val}
+        .panel
+            .panel-body
+                legend Add a friend
+                form(method='POST')
+                    .form-group
+                        input.form-control(type='email', name='friend_email', id='friend_email', placeholder='email', autofocus=true)
+                    button.btn.btn-default(type='submit' style='padding-top: 10px')
+                        | Submit
+        .panel
+            .panel-body
+                legend Remove a friend
+                form(method='POST' action='/friends?_method=DELETE')
+                    .form-group
+                        input.form-control(type='email', name='delete_email', id='delete_email', placeholder='email', autofocus=true)
+                    button.btn.btn-default(type='submit' style='padding-top: 10px')
+                        | Submit

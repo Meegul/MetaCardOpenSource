@@ -1,0 +1,129 @@
+extends ../layout
+
+block content
+  .container
+    if messages.success
+      .alert.alert-success(role='alert')
+        for success in messages.success
+          div= success.msg
+    if messages.error
+      .alert.alert-danger(role='alert')
+        for error in messages.error
+          div= error.msg
+    .panel
+      .panel-body
+        form.form-horizontal(method='POST', action='/account?_method=PUT')
+          legend Profile Information
+          .form-group
+            label.col-sm-3(for='first_name') First Name
+            .col-sm-7
+              input.form-control(type='text', name='first_name', id='first_name', value=user.first_name)
+          .form-group
+            label.col-sm-3(for='last_name') Last Name
+            .col-sm-7
+              input.form-control(type='text', name='last_name', id='last_name', value=user.last_name)
+          .form-group
+            label.col-sm-3(for='email') Email
+            .col-sm-7
+              input.form-control(type='email', name='email', id='email', value=user.email)
+          .form-group(style='padding-bottom: 1%')
+            if (user.facebook)
+              label.col-sm-3(for='facebook') Facebook
+              .col-sm-7
+                 a(href='http://facebook.com/#{user.facebook}') facebook.com/#{user.facebook}
+            else
+              label.col-sm-3(for='facebook') Facebook
+              .col-sm-7
+                a(href='/auth/facebook') Link your Facebook account
+          .form-group
+            label.col-sm-3(for='twitter') Twitter
+            .col-sm-7
+              input.form-control(type='twitter', name='twitter', id='twitter', value=user.twitter)
+          .form-group(style='padding-bottom: 1%')
+            if (user.linkedin)
+              label.col-sm-3(for='linkedin') LinkedIn
+              .col-sm-7
+                a(href='#{user.linkedin}') #{user.linkedin}
+            else
+              label.col-sm-3(for='facebook') LinkedIn
+              .col-sm-7
+                a(href='/auth/linkedin') Link your LinkedIn account
+          .form-group
+            label.col-sm-3 Gender
+            .col-sm-4
+              label.radio-inline.radio.col-sm-4
+                input(type='radio', checked=(user.gender == 'Male'), name='gender', value='Male', data-toggle='radio')
+                span Male
+              label.radio-inline.col-sm-4
+                input(type='radio', checked=(user.gender == 'Female'), name='gender', value='Female', data-toggle='radio')
+                span Female
+          .form-group
+            label.col-sm-3(for='location') Location
+            .col-sm-7
+              input.form-control(type='text', name='location', id='location', value=user.location)
+          .form-group
+            label.col-sm-3(for='home_phone') Home Phone
+            .col-sm-7
+              input.form-control(type='home_phone', name='home_phone', id='home_phone', value=user.home_phone)
+          .form-group
+            label.col-sm-3(for='work_phone') Work Phone
+            .col-sm-7
+              input.form-control(type='work_phone', name='work_phone', id='work_phone', value=user.work_phone)
+          .form-group
+            label.col-sm-3(for='cell_phone') Cell Phone
+            .col-sm-7
+              input.form-control(type='cell_phone', name='cell_phone', id='cell_phone', value=user.cell_phone)
+          .form-group
+            label.col-sm-3(for='website') Website
+            .col-sm-7
+              input.form-control(type='text', name='website', id='website', value=user.website)
+          .form-group
+            label.col-sm-3 Profile Picture
+            .col-sm-4
+              img(src=user.picture, class='profile', width='100', height='100')
+          .form-group
+            .col-sm-offset-3.col-sm-4
+              button.btn.btn-success(type='submit') Update Profile
+    .panel
+      .panel-body
+        form.form-horizontal(method='POST', action='/account?_method=PUT')
+          legend Change Password
+          .form-group
+            label.col-sm-3(for='password') New Password
+            .col-sm-7
+              input.form-control(type='password', name='password', id='password')
+          .form-group
+            label.col-sm-3(for='confirm') Confirm Password
+            .col-sm-7
+              input.form-control(type='password', name='confirm', id='confirm')
+          .form-group
+            .col-sm-4.col-sm-offset-3
+              button.btn.btn-success(type='submit') Change Password
+    .panel
+      .panel-body
+        .form-horizontal
+          legend Linked Accounts
+          .form-group
+            .col-sm-offset-3.col-sm-4
+              if user.google
+                p: a.text-danger(href='/unlink/google') Unlink your Google account
+              else
+                p: a(href='/auth/google') Link your Google account
+              if user.facebook
+                p: a.text-danger(href='/unlink/facebook') Unlink your Facebook account
+              else
+                p: a(href='/auth/facebook') Link your Facebook account
+              if user.linkedin
+                p: a.text-danger(href='/unlink/linkedin') Unlink your LinkedIn account
+              else
+                p: a(href='/auth/linkedin') Link your LinkedIn account
+
+
+    .panel
+      .panel-body
+        form.form-horizontal(method='POST', action='/account?_method=DELETE')
+          legend Delete Account
+          .form-group
+            p.col-sm-offset-3.col-sm-9 You can delete your account, but keep in mind this action is irreversible.
+            .col-sm-offset-3.col-sm-9
+              button.btn.btn-danger(type='submit') Delete my account

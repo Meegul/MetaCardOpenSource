@@ -1,0 +1,35 @@
+extends ../layout
+
+block content
+  .jumbotron-container-fluid(style = "text-align: center;")
+      h3(style = "font-size: 2em") Connect with friends quickly.
+      p(style = "font-size: 1.5em") Add friends on social media in one centralized location.
+  .login-container(style = "text-align: center; width:auto; max-width: 600px;")
+    .panel
+      .panel-body
+        if messages.error
+          .alert.alert-danger(role='alert')
+            for error in messages.error
+              div= error.msg
+
+        form(method='POST')
+          input(style="display: none;" name='redirURL' id='redirURL' value='#{redirURL}')
+          legend Log In
+          .form-group
+            input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus=true)
+          .form-group
+            input.form-control(type='password', name='password', id='password', placeholder='Password')
+          .form-group
+            a(href='/forgot')
+              strong Forgot your password?
+            p.text(style="padding-top:1%") Don't have an account?&nbsp;
+              a(href='/signup')
+                strong Sign up
+          button.btn.btn-success(type='submit') Log in
+
+        .hr-title
+          span or
+
+        .btn-toolbar.text(style="padding-left:3%")
+          a.btn.btn-google(href='/auth/google') Sign in with Google
+          a.btn.btn-facebook(href='/auth/facebook') Sign in with Facebook

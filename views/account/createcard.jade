@@ -1,0 +1,127 @@
+extends ../layout
+
+block content
+    .container
+        if messages.success
+            .alert.alert-success(role='alert')
+                for success in messages.success
+                    div= success.msg
+        if messages.error
+            .alert.alert-danger(role='alert')
+                for error in messages.error
+                    div= error.msg
+        .panel
+            .panel-body
+                legend Create a card so friends can quickly connect with you.
+                form(method='POST', action='/createcard?_method=POST')
+                    .form-group
+                        input.form-control(type='card_name', name='card_name', id='card_name', placeholder='Name of card (ex: Business Card or Friend Card)', autofocus=true)
+                    label.control-label What would you like to include in your card?
+                    .checkbox
+                        label
+                            if (user.email)
+                                input.checkbox-toggle-primary(syle='display: inline-block; width: 50%', type='checkbox', name='email', value='true')
+                                |Email
+                            else
+                                input.checkbox(syle='display: inline-block; width: 50%', disabled='disabled', type='checkbox', name='email', value='true')
+                                |Email
+                    .checkbox
+                        label
+                            if (user.facebook)
+                                input.checkbox(type='checkbox', name='facebook', value='true')
+                                |Facebook
+                            else
+                                input.checkbox(type='checkbox', disabled='disabled', name='facebook', value='true', style='color: #999999;')
+                                a(style='color: #999999; margin: 0px;', href='/auth/facebook', title="Click here to authorize account", data-toggle="tooltip") Facebook
+                    .checkbox
+                        label
+                            if (user.linkedin)
+                                input.checkbox(type='checkbox', name='linkedin', value='true')
+                                |LinkedIn
+                            else
+                                input.checkbox(type='checkbox', disabled='disabled', name='linkedin', value='true', href='/auth/linkedin')
+                                a(style='color: #999999; margin: 0px;', href='/auth/linkedin', title="Click here to authorize account", data-toggle="tooltip") LinkedIn
+                    .checkbox
+                        label
+                            if (user.home_phone)
+                                input.checkbox(type='checkbox', name='home_phone', value='true')
+                                a(style='color: #000000; margin: 0px;', href='#home_phone_modal', data-toggle="modal") Home Phone
+                            else
+                                input.checkbox(type='checkbox', name='home_phone', value='true', disabled='disabled')
+                                span(data-toggle="tooltip", title="Click here to enter home phone")
+                                    a(style='color: #999999; margin: 0px;', href='#home_phone_modal', data-toggle="modal") Home Phone
+                    .checkbox
+                        label
+                            if (user.cell_phone)
+                                input.checkbox(type='checkbox', name='cell_phone', value='true')
+                                a(style='color: #000000; margin: 0px;', href='#cell_phone_modal', data-toggle="modal") Cell Phone
+                            else
+                                input.checkbox(type='checkbox', name='cell_phone', value='true', disabled='disabled')
+                                span(data-toggle="tooltip", title="Click here to enter cell phone")
+                                    a(style='color: #999999; margin: 0px;', href='#cell_phone_modal', data-toggle="modal") Cell Phone
+                    .checkbox
+                        label
+                            if (user.work_phone)
+                                input.checkbox(type='checkbox', name='work_phone', value='true')
+                                a(style='color: #000000; margin: 0px;', href='#work_phone_modal', data-toggle="modal") Work Phone
+                            else
+                                input.checkbox(type='checkbox', name='work_phone', value='true', disabled='disabled')
+                                span(data-toggle="tooltip", title="Click here to enter work phone")
+                                    a(style='color: #999999; margin: 0px;', href='#work_phone_modal', data-toggle="modal") Work Phone
+                    .checkbox
+                        label
+                            if (user.gender)
+                                input.checkbox(type='checkbox', name='gender', value='true')
+                                a(style='color: #000000; margin: 0px;', href='#gender_modal', data-toggle="modal") Gender
+                            else
+                                input.checkbox(type='checkbox', name='gender', value='true', disabled='disabled')
+                                a(style='color: #999999; margin: 0px;', href='#gender_modal', data-toggle="modal") Gender
+                    legend Who do you want to be able to see this card?
+                    .checkbox
+                        label
+                            input.checkbox(type='checkbox', name='protected', value='true')
+                            a(style='color: #000000; margin: 0px;') Only friends
+                    button.btn.btn-default(type='submit' style='padding-top: 10px')
+                        | Submit
+                    if !user.home_phone
+                        .modal.fade(id='home_phone_modal', aria-hidden="true", style='text-align: center')
+                            .modal-dialog
+                                .modal-content
+                                    .modal-header
+                                        h3 Enter your home phone number
+                                    .modal-body(style='margin-left: 5%; margin-right: 5%')
+                                        form(method='POST', action='/createcard?_method=PUT', id='home_phone_id')
+                                            .form-group
+                                                .col-sm-7
+                                                input.form-control(style='width:90%; margin-left: 5%; text-align: center', type='text', pattern="[0-9]{10,11}", title='Phone number must consist of 10 or 11 digits', name='home_phone', id='home_phone', placeholder='Home phone number', value=user.home_phone)
+                                            .modal-footer
+                                                button.btn.btn-primary(type="submit", style='margin-right: 63%') Save Changes
+                                                button(type="button", class="close", data-dismiss="modal", style='padding-top:2%') Close
+                    if !user.work_phone
+                        .modal.fade(id='work_phone_modal', aria-hidden="true", style='text-align: center')
+                            .modal-dialog
+                                .modal-content
+                                    .modal-header
+                                        h3 Enter your cell phone number
+                                    .modal-body(style='margin-left: 5%; margin-right: 5%')
+                                        form(method='POST', action='/createcard?_method=PUT', id='work_phone_id')
+                                            .form-group
+                                                .col-sm-7
+                                                input.form-control(style='width:90%; margin-left: 5%; text-align: center', type='text', pattern="[0-9]{10,11}", title='Phone number must consist of 10 or 11 digits', name='work_phone', id='work_phone', placeholder='Work phone number', value=user.work_phone)
+                                            .modal-footer
+                                                button.btn.btn-primary(type="submit", style='margin-right: 63%') Save Changes
+                                                button(type="button", class="close", data-dismiss="modal", style='padding-top:2%') Close
+                    if !user.cell_phone             
+                        .modal.fade(id='cell_phone_modal', aria-hidden="true", style='text-align: center')
+                            .modal-dialog
+                                .modal-content
+                                    .modal-header
+                                        h3 Enter your cell phone number
+                                    .modal-body(style='margin-left: 5%; margin-right: 5%')
+                                        form(method='POST', action='/createcard?_method=PUT', id='cell_phone_id')
+                                            .form-group
+                                                .col-sm-7
+                                                input.form-control(style='width:90%; margin-left: 5%; text-align: center', type='text', pattern="[0-9]{10,11}", title='Phone number must consist of 10 or 11 digits', name='cell_phone', id='cell_phone', placeholder='Cell phone number', value=user.cell_phone)
+                                            .modal-footer
+                                                button.btn.btn-primary(type="submit", style='margin-right: 63%') Save Changes
+                                                button(type="button", class="close", data-dismiss="modal", style='padding-top:2%') Close

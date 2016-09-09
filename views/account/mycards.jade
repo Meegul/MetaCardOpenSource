@@ -1,0 +1,85 @@
+extends ../layout
+
+block content
+    .container
+        if messages.success
+            .alert.alert-success(role='alert')
+                for success in messages.success
+                    div= success.msg
+        if messages.error
+            .alert.alert-danger(role='alert')
+                for error in messages.error
+                    div= error.msg
+        each val, index in user.card
+            .panel
+                .panel-body
+                    form.form-horizontal(method='POST', action='/mycards?_method=DELETE')
+                        if user.card[index].card_name
+                            legend(style="display: inline-block; width: 96%") #{user.card[index].card_name}
+                        ul.dropdown(style="display: inline-block; width: 4%; float: right")
+                            a.dropdown-toggle(href='#', data-toggle='dropdown')
+                                .glyphicon.glyphicon-cog
+                            ul.dropdown-menu(style='text-align: center; position: inline; left: -90px')
+                                li
+                                    button.btn(type='submit' style='background: transparent; color: #b61b17; font-weight: normal; padding: 0 0; padding-top: 6px;') Delete Card
+                                    li.divider
+                                    a(href="/viewcard?user=#{user.id}&card=#{user.card[index].card_id}", style="color: #1d7cf4; margin: 0 auto;") Link to this card
+                        input.form-control(type='hidden', name='index', value='#{index}')
+                        .form-group
+                            label.col-sm-3(for='name') Name
+                            .col-sm-7
+                                p #{user.first_name} #{user.last_name}
+                        if user.card[index].email
+                            .form-group
+                                label.col-sm-3(for='email') Email Address
+                                .col-sm-7
+                                    p #{user.email}
+                        if user.card[index].facebook
+                            .form-group
+                                label.col-sm-3(for='facebook') Facebook Profile
+                                .col-sm-7
+                                    a(href = "http://facebook.com/#{user.facebook}") facebook.com/#{user.facebook}
+                        if user.card[index].linkedin
+                            .form-group
+                                label.col-sm-3(for='linkedin') LinkedIn Profile
+                                .col-sm-7
+                                    a(href = user.linkedin) #{user.linkedin}
+                        if val.cell_phone
+                            .form-group
+                                label.col-sm-3(for='cell_phone') Cell Phone
+                                .col-sm-7
+                                    a(href="tel:#{user.cell_phone}") #{user.cell_phone}
+                                    p
+                        if val.work_phone
+                            .form-group
+                                label.col-sm-3(for='work_phone') Work Phone
+                                .col-sm-7
+                                    a(href="tel:#{user.work_phone}") #{user.work_phone}
+                                    p
+                        if val.home_phone
+                            .form-group
+                                label.col-sm-3(for='home_phone') Home Phone
+                                .col-sm-7
+                                    a(href="tel:#{user.home_phone}") #{user.home_phone}
+                                    p
+                        if val.gender
+                            .form-group
+                                label.col-sm-3(for='gender') Gender
+                                .col-sm-7
+                                    p #{user.gender}
+                        if val.protected
+                            .form-group
+                                label.col-sm-3(for='protected') Security
+                                .col-sm-7
+                                    p This card is only accessible to your friends
+                        else
+                            .form-group
+                                label.col-sm-3(for='protected') Security
+                                .col-sm-7
+                                    p This card is viewable by everyone
+        if !user.card[0]
+            .container
+                .panel
+                    .panel-body(style='text-align: center')
+                        h4 Hmm... Looks like you do not have any cards. Create a card (or a few) so your friends can quickly add you on social media!
+                        a(href='/helpmake') Need help?

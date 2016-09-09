@@ -1,0 +1,61 @@
+extends layout
+
+block content
+    .container
+        if messages.success
+            .alert.alert-success(role='alert')
+                for success in messages.success
+                    div= success.msg
+        if messages.error
+            .alert.alert-danger(role='alert')
+                for error in messages.error
+                    div= error.msg
+        .panel
+            .panel-body
+                if card_user.first_name && card_user.last_name
+                    .form-group
+                        label.col-sm-3(for='name') Name
+                        .col-sm-7
+                            p #{card_user.first_name} #{card_user.last_name}
+                if card.email
+                    .form-group
+                        label.col-sm-3(for='email') Email Address
+                        .col-sm-7
+                            a(href="mailto:#{card_user.email}") #{card_user.email}
+                            p
+                if card.facebook
+                    .form-group
+                        label.col-sm-3(for='name') Facebook Profile
+                        .col-sm-7
+                            a(href ="http://facebook.com/#{card_user.facebook}") facebook.com/#{card_user.facebook}
+                            p
+                if card.linkedin
+                    .form-group
+                        label.col-sm-3(for='name') LinkedIn Profile
+                        .col-sm-7
+                            a(href = "#{card_user.linkedin}") #{card_user.linkedin}
+                            p
+                if card.cell_phone
+                    .form-group
+                        label.col-sm-3(for='name') Cell Phone
+                        .col-sm-7
+                            a(href="tel:#{card_user.cell_phone}") #{card_user.cell_phone}
+                            p
+                if card.work_phone
+                    .form-group
+                        label.col-sm-3(for='name') Work Phone
+                        .col-sm-7
+                            a(href="tel:#{card_user.work_phone}") #{card_user.work_phone}
+                            p
+                if card.home_phone
+                    .form-group
+                        label.col-sm-3(for='name') Home Phone
+                        .col-sm-7
+                            a(href="tel:#{card_user.home_phone}") #{card_user.home_phone}
+                            p
+                if card.gender
+                    .form-group
+                        label.col-sm-3(for='gender') Gender
+                        .col-sm-7
+                            p #{card_user.gender}
+                    
